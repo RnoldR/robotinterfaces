@@ -1,4 +1,4 @@
-# Basic commands
+# My personal manual and cheat sheet
 
 ## 1. Create new package
 
