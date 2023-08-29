@@ -1,7 +1,5 @@
 # My personal manual and cheat sheet
 
-## 1. Create new package
-
 What makes a ROS package?
 
 
@@ -47,7 +45,7 @@ workspace_folder/
           src/
 ```
 
-### Create a package
+### 1. Create a package
 
 ```
 cd workspace_folder/src
@@ -61,13 +59,36 @@ simple Hello World type executable in the package.
 ros2 pkg create --build-type ament_python --node-name my_node my_package
 ```
 
-## 2. Build a package
+## 2 Check dependencies
+
+Dependencies are listed in `package.xml` and checked by rosdep from the workspace as follows:
+
+As root:
+
+```
+rosdep install --from-paths src -y --ignore-src
+```
+
+As user:
+
+```
+rosdep install --as-root pip:false --from-paths src -y --ignore-src
+```
+
+The --as-root option allows for installing packages not as root which can be very useful for pip installations. 
+
+Dependencies for python are defined in `package.xml` by the \<test_depend> tag. 
+
+<test_depend>python3-pytest</test_depend>
+
+
+## 3. Build a package
 
 ```
 colcon build --packages-select my_package
 ```
 
-## 3. Source the setup file
+## 4. Source the setup file
 
 Add the workspace to the path.
 
@@ -75,7 +96,7 @@ Add the workspace to the path.
 source install/local_setup.bash
 ```
 
-## 4. Run the package
+## 5. Run the package
 
 To run the executable you created using the --node-name argument during package creation, enter the command:
 
@@ -83,11 +104,11 @@ To run the executable you created using the --node-name argument during package 
 ros2 run my_package my_node
 ```
 
-## 5. Examine package contents
+## 6. Examine package contents
 
-nside ros2_ws/src/my_package, you will see the files and folders that ros2 pkg create automatically generated: `my_package  package.xml  resource  setup.cfg  setup.py  test`.
+Inside ros2_ws/src/my_package, you will see the files and folders that ros2 pkg create automatically generated: `my_package  package.xml  resource  setup.cfg  setup.py  test`.
 
-## 6. Customize the package
+## 7. Customize the package
 
 ### package.xml
 
@@ -139,3 +160,15 @@ Change
     },
 ```
 
+8. Issues with creating custom messages/topics
+
+Best is to create a stand-alone project for C++. Adjust CMakeLists.txt and package.xml accordingly and build. Typical build errors have been solved [here](https://stackoverflow.com/questions/72752937/ros2-importerror-cannot-import-name-generate-py-from-rosidl-generator-py). In short:
+
+install two packages in your environment:
+
+- pip install empy
+- pip install lark
+
+If that is insuffient comment out the next line in CMakeLists.txt, so:
+
+    # find_package(rosidl_default_generators REQUIRED)
