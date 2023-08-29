@@ -1,0 +1,3 @@
+docker pull ros:humble-ros-base
+docker run -v ~/rosidl_ws://media/i-files/home/arnold/development/ros2/interfaces --rm -i -t ros:humble-ros-base bash
+# sudo docker run -v ~/rosidl_ws:/home/joaquin/rosidl_ws --rm -i -t ros:foxy-ros-base bash
