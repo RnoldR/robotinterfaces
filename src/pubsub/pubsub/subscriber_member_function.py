@@ -1,21 +1,21 @@
 import rclpy
 from rclpy.node import Node
 
-from robot_interfaces.msg import Num
+from robot_interfaces.msg import Distance
 
 class MinimalSubscriber(Node):
 
     def __init__(self):
         super().__init__('minimal_subscriber')
         self.subscription = self.create_subscription(
-            Num,
+            Distance,
             'topic',
             self.listener_callback,
             10)
         self.subscription  # prevent unused variable warning
 
     def listener_callback(self, msg):
-        self.get_logger().info(f'Received {msg.num}')
+        self.get_logger().info(f'Received {msg.distance} ({msg.status})')
 
 
 def main(args=None):

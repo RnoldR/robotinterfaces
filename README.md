@@ -1,4 +1,17 @@
-# My personal manual and cheat sheet
+# Prevent errors when creating custom messages
+
+Many ROS2 errors can occur when trying to setup custom messages. This repository was originally set up in order to communicate with the ROS2 maintainers, but I fortunately found out at least on how to set up a somehwat reliable environment to develop custom messages. Here is my incomplete checklist on how to counter those errors.
+
+- **Check for mistakes:** The most obvious: you made an error yourself. Check your code very carefully. Especially dependencies omitted in CMakeLists.txt are a source of frustration. Follow tutorials and manual carefully
+- **Python version:** Ros2 appears to be sensitive for the version of the python compiler, what worked for me is creating a new environment with python 3.10, e.g.: `conda create -n <environment name> python=3.10 numpy`. Tests with pyton 3.8, 3.9 and 3.11 resulted in errors.
+- **Environment:** Switch to that environment: `conda activate <environment name>`
+- **Install additional libraries:** `pip install empy lark catkin-pkg`
+- **Clean workspace:** When errors occur clean up your builds: rm -rf for build, install and log or better: `colcon clean workspace -y`. I once cleaned up src as well, so colcon clean is the safer option
+- **New terminal:** In the case of errors also start from a new terminal, the working terminal has too many variables set (by `source install/setup.bash`) which are in some cases confusing or wrong. Don't forget to activate your environment
+- **Anaconda is ok:** There was a remark about anaconda not trusted, no evidence was provided. I found anaconda very helpful in quickly setting up and testing environments for specific versions of python. Pip and anaconda interact without problems. Of course you may prefer other tools. Use what works best for you but if you use anaconda there is no need to switch
+- **Try not to pip install as root:** Rosdep installs python dependencies as root  by default. In general this is not what you want and pip warns against it because it might break installations. In any case it prevents working with environments which I personally found very beneficial. To prevent rosdep installing python libraries as root use the rosdep option: `--as-root pip:false`
+
+## My personal ros2 manual and cheat sheet
 
 What makes a ROS package?
 
@@ -20,7 +33,7 @@ my_package/
       my_package/
 ```
 
-Best practice is to create new packages in the workspace/src directory. Mirrors will be setuop for build, log and install directories.
+Best practice is to create new packages in the workspace/src directory. 
 
 ```
 workspace_folder/
